@@ -20,9 +20,21 @@ class StackForm extends Component {
         this.setState({ cards })
     }
 
+    updateCardPromptOrAnswer(event, index, promptOrAnswer) {
+        const { cards } = this.state
+
+        cards[index][promptOrAnswer] = event.target.value
+
+        this.setState({ cards })
+    }
+
+    addStack() {
+        console.log('stackform state', this.state)
+    }
+
 
     render () {
-        console.log('stackform state', this.state)
+        // console.log('stackform state', this.state)
         return (
             <div>
                 <Link to='/' className='link-home'>
@@ -34,11 +46,33 @@ class StackForm extends Component {
                     <FormGroup>
                         <ControlLabel>Title:</ControlLabel>
                         {' '}
-                        <FormControl />
+                        <FormControl onChange={event => this.setState({ title: event.target.value})} />
                     </FormGroup>
+                    {
+                        this.state.cards.map((card, index) => {
+                            return (
+                                <div key={card.id}>
+                                    <br />
+                                    <FormGroup>
+                                        <ControlLabel>Prompt:</ControlLabel>
+                                        {' '}
+                                        <FormControl onChange={event => this.updateCardPromptOrAnswer(event, index, 'prompt')
+                                           
+                                        } />
+                                        {' '}
+                                        <ControlLabel> Answer: </ControlLabel>
+                                        {' '}
+                                        <FormControl onChange={event => this.updateCardPromptOrAnswer(event, index, 'answer')} />
+                                    </FormGroup>
+                                </div>
+                            )
+                        })
+                    }
                 </Form>
                 <br />
                 <Button onClick={() => this.addCard()}>Add Card</Button>
+                {' '}
+                <Button onClick={() => this.addStack()}>Add Stack</Button>
             </div>
         )
     }
